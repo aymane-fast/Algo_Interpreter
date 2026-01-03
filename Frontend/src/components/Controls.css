@@ -1,0 +1,88 @@
+.controls {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 20px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  flex: 1;
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.btn-run {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-run:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn-step {
+  background: #2196f3;
+  color: white;
+}
+
+.btn-step:hover:not(:disabled) {
+  background: #0b7dda;
+}
+
+.btn-reset {
+  background: #ff9800;
+  color: white;
+}
+
+.btn-reset:hover:not(:disabled) {
+  background: #e68900;
+}
+
+.input-form {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e3f2fd;
+  border-radius: 4px;
+}
+
+.input-form label {
+  display: block;
+  margin-bottom: 10px;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #2196f3;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.btn-submit {
+  background: #2196f3;
+  color: white;
+  padding: 10px 20px;
+}
+
+.btn-submit:hover {
+  background: #0b7dda;
+}
