@@ -20,6 +20,7 @@ php artisan serve
 ```bash
 cd Frontend
 npm install
+copy .env.example .env
 npm run dev
 ```
 

@@ -122,7 +122,17 @@ cd Frontend
 npm install
 ```
 
-3. Lancez le serveur de développement:
+3. Créez le fichier `.env`:
+```bash
+copy .env.example .env
+```
+
+Le fichier `.env` contient:
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+4. Lancez le serveur de développement:
 ```bash
 npm run dev
 ```

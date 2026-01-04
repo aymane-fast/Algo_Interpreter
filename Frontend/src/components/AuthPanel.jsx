@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import './AuthPanel.css';
 
 function AuthPanel({ user, setUser, savedAlgorithms, setSavedAlgorithms, code, setCode }) {
@@ -21,11 +21,11 @@ function AuthPanel({ user, setUser, savedAlgorithms, setSavedAlgorithms, code, s
         ? { email, password }
         : { name, email, password };
 
-      const response = await axios.post(endpoint, data);
+      const response = await api.post(endpoint, data);
       
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       
       setShowAuth(false);
       setMessage('');
@@ -38,13 +38,13 @@ function AuthPanel({ user, setUser, savedAlgorithms, setSavedAlgorithms, code, s
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
     setSavedAlgorithms([]);
   };
 
   const loadAlgorithms = async () => {
     try {
-      const response = await axios.get('/api/algorithms');
+      const response = await api.get('/api/algorithms');
       setSavedAlgorithms(response.data);
     } catch (error) {
       console.error('Erreur de chargement des algorithmes:', error);
@@ -58,7 +58,7 @@ function AuthPanel({ user, setUser, savedAlgorithms, setSavedAlgorithms, code, s
     }
 
     try {
-      await axios.post('/api/algorithms', {
+      await api.post('/api/algorithms', {
         name: algorithmName,
         code: code
       });

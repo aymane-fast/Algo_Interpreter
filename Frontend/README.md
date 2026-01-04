@@ -8,6 +8,16 @@ Interface utilisateur React pour l'interpréteur d'algorithmes en pseudocode fra
 npm install
 ```
 
+## Configuration
+
+Create a `.env` file (or copy `.env.example`):
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+This configures the backend API URL. Change it if your backend runs on a different port or domain.
+
 ## Développement
 
 ```bash
