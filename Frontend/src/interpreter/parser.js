@@ -73,6 +73,13 @@ export class NumberNode {
   }
 }
 
+export class StringNode {
+  constructor(value) {
+    this.type = 'String';
+    this.value = value;
+  }
+}
+
 export class IdentifierNode {
   constructor(name) {
     this.type = 'Identifier';
@@ -278,6 +285,11 @@ export class Parser {
     if (token.type === TokenType.NUMBER) {
       this.advance();
       return new NumberNode(token.value);
+    }
+    
+    if (token.type === TokenType.STRING) {
+      this.advance();
+      return new StringNode(token.value);
     }
     
     if (token.type === TokenType.IDENTIFIER) {

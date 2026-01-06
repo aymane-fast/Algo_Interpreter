@@ -11,13 +11,8 @@ import './App.css';
 
 function App() {
   const [code, setCode] = useState(`Début
-  Lire A
-  Lire B
-  Si A > B Alors
-    Écrire A
-  Sinon
-    Écrire B
-  FinSi
+  Lire nom
+  Écrire "Bonjour " + nom
 Fin`);
   
   const [interpreter] = useState(() => new Interpreter());
@@ -167,6 +162,7 @@ Fin`);
 
       <footer className="app-footer">
         <p>Syntaxe supportée: Début/Fin, Si/Sinon/FinSi, TantQue/FinTantQue, Pour/FinPour, Lire, Écrire</p>
+        <p>Types: Nombres et chaînes de caractères (entre guillemets) • Concaténation avec +</p>
       </footer>
     </div>
   );

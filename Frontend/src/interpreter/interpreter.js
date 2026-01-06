@@ -26,11 +26,10 @@ export class Interpreter {
   }
 
   provideInput(value) {
+    // Try to parse as number, otherwise keep as string
     const num = parseFloat(value);
-    if (isNaN(num)) {
-      throw new Error('Entrée invalide: un nombre est attendu');
-    }
-    this.inputQueue.push(num);
+    const finalValue = isNaN(num) ? value : num;
+    this.inputQueue.push(finalValue);
     this.isWaitingForInput = false;
   }
 
@@ -201,6 +200,9 @@ export class Interpreter {
       case 'Number':
         return node.value;
       
+      case 'String':
+        return node.value;
+      
       case 'Identifier':
         if (!(node.name in this.variables)) {
           throw new Error(`Variable non définie: ${node.name}`);
@@ -221,6 +223,10 @@ export class Interpreter {
     
     switch (node.operator) {
       case TokenType.PLUS:
+        // Handle string concatenation or numeric addition
+        if (typeof left === 'string' || typeof right === 'string') {
+          return String(left) + String(right);
+        }
         return left + right;
       case TokenType.MINUS:
         return left - right;

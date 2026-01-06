@@ -48,11 +48,10 @@ function Controls({ onRun, onStep, onReset, isRunning, isWaitingInput, inputVari
           </label>
           <div className="input-group">
             <input
-              type="number"
-              step="any"
+              type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Entrez un nombre"
+              placeholder="Entrez un nombre ou du texte"
               autoFocus
             />
             <button type="submit" className="btn-submit">

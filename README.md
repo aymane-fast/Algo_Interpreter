@@ -48,15 +48,16 @@ Algo_interpetar/
 - `Lire` - Saisie utilisateur
 
 ### Opérateurs
-- Affectation: `←`
+- Affectation: `←` (utilisez le bouton "← Insérer flèche")
 - Arithmétiques: `+` `-` `*` `/`
 - Comparaison: `>` `<` `=` `>=` `<=`
 - Logiques: `ET` `OU`
+- Concaténation: `+` (pour les chaînes)
 
 ### Types de données
-- Nombres uniquement (entiers et décimaux)
-- Pas de chaînes de caractères
-- Pas de tableaux
+- **Nombres** (entiers et décimaux): `42`, `3.14`
+- **Chaînes de caractères**: `"Bonjour"`, `'texte'`
+- Variables (peuvent contenir nombres ou chaînes)
 
 ## 🚀 Installation et Lancement
 
@@ -172,15 +173,23 @@ Connectez-vous, donnez un nom à votre algorithme, et sauvegardez-le.
 
 ## 📚 Exemples d'algorithmes
 
+### Salutation simple avec concaténation
+```
+Début
+  Lire nom
+  Écrire "Bonjour " + nom + " !"
+Fin
+```
+
 ### Maximum de deux nombres
 ```
 Début
   Lire A
   Lire B
   Si A > B Alors
-    Écrire A
+    Écrire "Le maximum est: " + A
   Sinon
-    Écrire B
+    Écrire "Le maximum est: " + B
   FinSi
 Fin
 ```
@@ -190,10 +199,10 @@ Fin
 Début
   Lire N
   somme ← 0
-  Pour i ← 1 N
+  Pour i ← 1 <= N
     somme ← somme + i
   FinPour
-  Écrire somme
+  Écrire "La somme est: " + somme
 Fin
 ```
 

@@ -30,6 +30,7 @@ export const TokenType = {
   
   // Literals
   NUMBER: 'NUMBER',
+  STRING: 'STRING',
   IDENTIFIER: 'IDENTIFIER',
   
   // Special
@@ -127,6 +128,31 @@ export class Lexer {
     return id;
   }
 
+  readString() {
+    let str = '';
+    const quote = this.current(); // " or '
+    this.advance(); // Skip opening quote
+    
+    while (this.current() && this.current() !== quote) {
+      if (this.current() === '\\' && this.peek() === quote) {
+        // Handle escaped quotes
+        this.advance();
+        str += this.current();
+        this.advance();
+      } else {
+        str += this.current();
+        this.advance();
+      }
+    }
+    
+    if (this.current() !== quote) {
+      throw new Error(`Chaîne de caractères non fermée à la ligne ${this.line}`);
+    }
+    
+    this.advance(); // Skip closing quote
+    return str;
+  }
+
   tokenize() {
     const tokens = [];
     
@@ -210,6 +236,13 @@ export class Lexer {
       if (this.current() === '/') {
         tokens.push(new Token(TokenType.DIVIDE, '/', line, column));
         this.advance();
+        continue;
+      }
+      
+      // String literals
+      if (this.current() === '"' || this.current() === "'") {
+        const str = this.readString();
+        tokens.push(new Token(TokenType.STRING, str, line, column));
         continue;
       }
       

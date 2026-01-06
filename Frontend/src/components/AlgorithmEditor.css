@@ -8,10 +8,33 @@
   flex-direction: column;
 }
 
-.algorithm-editor h2 {
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
+}
+
+.algorithm-editor h2 {
   color: #333;
   font-size: 20px;
+  margin: 0;
+}
+
+.btn-arrow {
+  background: #667eea;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-arrow:hover {
+  background: #5568d3;
 }
 
 .algorithm-editor textarea {
