@@ -7,9 +7,12 @@ import Controls from './components/Controls';
 import VariableTable from './components/VariableTable';
 import OutputConsole from './components/OutputConsole';
 import AuthPanel from './components/AuthPanel';
+import SyntaxReference from './components/SyntaxReference';
+import Examples from './components/Examples';
 import './App.css';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('editor');
   const [code, setCode] = useState(`Début
   Lire nom
   Écrire "Bonjour " + nom
@@ -131,39 +134,68 @@ Fin`);
         <p>Plateforme éducative pour le pseudocode algorithmique français</p>
       </header>
 
-      <AuthPanel 
-        user={user}
-        setUser={setUser}
-        savedAlgorithms={savedAlgorithms}
-        setSavedAlgorithms={setSavedAlgorithms}
-        code={code}
-        setCode={setCode}
-      />
+      <nav className="app-nav">
+        <button 
+          className={`nav-btn ${currentPage === 'editor' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('editor')}
+        >
+          ⚙️ Éditeur
+        </button>
+        <button 
+          className={`nav-btn ${currentPage === 'syntax' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('syntax')}
+        >
+          📚 Syntaxe
+        </button>
+        <button 
+          className={`nav-btn ${currentPage === 'examples' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('examples')}
+        >
+          💡 Exemples
+        </button>
+      </nav>
 
-      <div className="main-content">
-        <div className="left-panel">
-          <AlgorithmEditor code={code} setCode={setCode} />
-          <Controls 
-            onRun={handleRun}
-            onStep={handleStep}
-            onReset={handleReset}
-            isRunning={isRunning}
-            isWaitingInput={isWaitingInput}
-            inputVariable={inputVariable}
-            onInputSubmit={handleInputSubmit}
+      {currentPage === 'editor' && (
+        <>
+          <AuthPanel 
+            user={user}
+            setUser={setUser}
+            savedAlgorithms={savedAlgorithms}
+            setSavedAlgorithms={setSavedAlgorithms}
+            code={code}
+            setCode={setCode}
           />
-        </div>
 
-        <div className="right-panel">
-          <VariableTable variables={variables} />
-          <OutputConsole output={output} error={error} />
-        </div>
-      </div>
+          <div className="main-content">
+            <div className="left-panel">
+              <AlgorithmEditor code={code} setCode={setCode} />
+              <Controls 
+                onRun={handleRun}
+                onStep={handleStep}
+                onReset={handleReset}
+                isRunning={isRunning}
+                isWaitingInput={isWaitingInput}
+                inputVariable={inputVariable}
+                onInputSubmit={handleInputSubmit}
+              />
+            </div>
 
-      <footer className="app-footer">
-        <p>Syntaxe supportée: Début/Fin, Si/Sinon/FinSi, TantQue/FinTantQue, Pour/FinPour, Lire, Écrire</p>
-        <p>Types: Nombres et chaînes de caractères (entre guillemets) • Concaténation avec +</p>
-      </footer>
+            <div className="right-panel">
+              <VariableTable variables={variables} />
+              <OutputConsole output={output} error={error} />
+            </div>
+          </div>
+
+          <footer className="app-footer">
+            <p>Syntaxe supportée: Début/Fin, Si/Sinon/FinSi, TantQue/FinTantQue, Pour/FinPour, Lire, Écrire</p>
+            <p>Types: Nombres et chaînes de caractères (entre guillemets) • Concaténation avec +</p>
+          </footer>
+        </>
+      )}
+
+      {currentPage === 'syntax' && <SyntaxReference />}
+      
+      {currentPage === 'examples' && <Examples />}
     </div>
   );
 }
