@@ -1,14 +1,18 @@
 .variable-table {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .variable-table h2 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .variable-table table {
@@ -17,33 +21,54 @@
 }
 
 .variable-table th {
-  background: #f5f5f5;
-  padding: 12px;
+  background: var(--gray-50);
+  padding: 10px 12px;
   text-align: left;
-  font-weight: 600;
-  color: #555;
-  border-bottom: 2px solid #ddd;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.variable-table tbody tr {
+  border-bottom: 1px solid var(--gray-100);
+  transition: background var(--transition);
+}
+
+.variable-table tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.variable-table tbody tr:last-child {
+  border-bottom: none;
 }
 
 .variable-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+  padding: 10px 12px;
+  font-size: 13px;
 }
 
 .var-name {
-  font-weight: 600;
-  color: #667eea;
-  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  color: var(--primary);
+  font-family: 'Consolas', 'Monaco', monospace;
 }
 
 .var-value {
-  font-family: 'Courier New', monospace;
-  color: #333;
+  font-family: 'Consolas', 'Monaco', monospace;
+  color: var(--text-primary);
+  background: var(--gray-100);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .empty-message {
-  color: #999;
+  color: var(--text-muted);
   font-style: italic;
   text-align: center;
-  padding: 20px;
+  padding: 24px 16px;
+  font-size: 13px;
 }

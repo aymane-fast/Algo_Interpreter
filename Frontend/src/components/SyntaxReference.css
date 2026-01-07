@@ -1,38 +1,41 @@
 .syntax-reference {
   max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 24px 16px;
 }
 
 .syntax-reference h1 {
-  color: #667eea;
-  margin-bottom: 40px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
   text-align: center;
-  font-size: 36px;
+  font-size: 28px;
+  font-weight: 600;
 }
 
 .syntax-section {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .syntax-section h2 {
-  color: #333;
-  border-bottom: 3px solid #667eea;
-  padding-bottom: 10px;
-  margin-bottom: 25px;
-  font-size: 24px;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .syntax-block {
-  margin-bottom: 25px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border-left: 4px solid #667eea;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--primary-light);
 }
 
 .syntax-block:last-child {
@@ -40,74 +43,83 @@
 }
 
 .syntax-block h3 {
-  color: #555;
-  margin-bottom: 15px;
-  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .syntax-block pre {
-  background: #2d2d2d;
-  color: #f8f8f2;
-  padding: 15px;
-  border-radius: 4px;
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 12px;
+  border-radius: var(--radius-sm);
   overflow-x: auto;
-  margin: 15px 0;
+  margin: 8px 0;
+  font-family: 'Consolas', 'Monaco', monospace;
+  border: 1px solid var(--gray-700);
 }
 
 .syntax-block code {
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.6;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 p code,
 li code,
 td code {
-  background: #e8e8e8;
-  color: #d63384;
+  background: #fef3c7;
+  color: #d97706;
   padding: 2px 6px;
   border-radius: 3px;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Consolas', 'Monaco', monospace;
 }
 
 .description {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 8px;
 }
 
 .operators-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 15px 0;
+  margin: 12px 0;
 }
 
 .operators-table th {
-  background: #667eea;
-  color: white;
-  padding: 12px;
+  background: var(--gray-100);
+  color: var(--text-primary);
+  padding: 10px 12px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .operators-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 13px;
 }
 
 .operators-table tbody tr:hover {
-  background: #f0f0f0;
+  background: var(--gray-50);
 }
 
 .priority-list {
-  padding-left: 25px;
-  line-height: 2;
+  padding-left: 24px;
+  line-height: 1.8;
 }
 
 .priority-list li {
-  margin-bottom: 8px;
-  color: #555;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
 }
 
 .not-supported-list {
@@ -116,8 +128,7 @@ td code {
 }
 
 .not-supported-list li {
-  padding: 8px 0;
-  color: #d32f2f;
-  font-weight: 500;
-  font-size: 15px;
+  padding: 6px 0;
+  color: var(--danger);
+  font-size: 13px;
 }
