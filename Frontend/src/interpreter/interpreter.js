@@ -205,7 +205,7 @@ export class Interpreter {
       
       case 'Identifier':
         if (!(node.name in this.variables)) {
-          throw new Error(`Variable non définie: ${node.name}`);
+          throw new Error(`Variable non définie: ${node.name} (cette variable doit être initialisée avant utilisation)`);
         }
         return this.variables[node.name];
       
@@ -234,7 +234,7 @@ export class Interpreter {
         return left * right;
       case TokenType.DIVIDE:
         if (right === 0) {
-          throw new Error('Division par zéro');
+          throw new Error('Erreur: Division par zéro détectée');
         }
         return left / right;
       case TokenType.GT:

@@ -22,6 +22,7 @@ Fin`);
   const [variables, setVariables] = useState({});
   const [output, setOutput] = useState([]);
   const [error, setError] = useState('');
+  const [errorLine, setErrorLine] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [isWaitingInput, setIsWaitingInput] = useState(false);
   const [inputVariable, setInputVariable] = useState('');
@@ -38,6 +39,7 @@ Fin`);
   const handleRun = () => {
     try {
       setError('');
+      setErrorLine(null);
       setIsRunning(true);
       
       const lexer = new Lexer(code);
@@ -56,6 +58,10 @@ Fin`);
       }
     } catch (err) {
       setError(err.message);
+      const lineMatch = err.message.match(/ligne (\d+)/);
+      if (lineMatch) {
+        setErrorLine(parseInt(lineMatch[1]));
+      }
       setIsRunning(false);
     }
   };
@@ -63,6 +69,7 @@ Fin`);
   const handleStep = () => {
     try {
       setError('');
+      setErrorLine(null);
       
       if (!isRunning) {
         const lexer = new Lexer(code);
@@ -91,6 +98,10 @@ Fin`);
       }
     } catch (err) {
       setError(err.message);
+      const lineMatch = err.message.match(/ligne (\d+)/);
+      if (lineMatch) {
+        setErrorLine(parseInt(lineMatch[1]));
+      }
       setIsRunning(false);
     }
   };
@@ -100,6 +111,7 @@ Fin`);
     setVariables({});
     setOutput([]);
     setError('');
+    setErrorLine(null);
     setIsRunning(false);
     setIsWaitingInput(false);
     setInputVariable('');
@@ -124,6 +136,10 @@ Fin`);
       }
     } catch (err) {
       setError(err.message);
+      const lineMatch = err.message.match(/ligne (\d+)/);
+      if (lineMatch) {
+        setErrorLine(parseInt(lineMatch[1]));
+      }
     }
   };
 
@@ -168,7 +184,7 @@ Fin`);
 
           <div className="main-content">
             <div className="left-panel">
-              <AlgorithmEditor code={code} setCode={setCode} />
+              <AlgorithmEditor code={code} setCode={setCode} errorLine={errorLine} />
               <Controls 
                 onRun={handleRun}
                 onStep={handleStep}

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './AlgorithmEditor.css';
 
-function AlgorithmEditor({ code, setCode }) {
+function AlgorithmEditor({ code, setCode, errorLine }) {
   const textareaRef = useRef(null);
   const lineNumbersRef = useRef(null);
   const [lineCount, setLineCount] = useState(1);
@@ -47,7 +47,10 @@ function AlgorithmEditor({ code, setCode }) {
       <div className="editor-container">
         <div className="line-numbers" ref={lineNumbersRef}>
           {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i + 1} className="line-number">
+            <div 
+              key={i + 1} 
+              className={`line-number ${errorLine === i + 1 ? 'error-line' : ''}`}
+            >
               {i + 1}
             </div>
           ))}
