@@ -131,6 +131,8 @@ export class Lexer {
   readString() {
     let str = '';
     const quote = this.current(); // " or '
+    const startLine = this.line; // Remember where the string started
+    const startColumn = this.column;
     this.advance(); // Skip opening quote
     
     while (this.current() && this.current() !== quote) {
@@ -146,7 +148,7 @@ export class Lexer {
     }
     
     if (this.current() !== quote) {
-      throw new Error(`Chaîne de caractères non fermée à la ligne ${this.line}`);
+      throw new Error(`Chaîne de caractères non fermée à la ligne ${startLine}`);
     }
     
     this.advance(); // Skip closing quote
