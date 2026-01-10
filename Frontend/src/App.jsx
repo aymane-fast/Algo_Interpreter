@@ -123,16 +123,14 @@ Fin`);
       setIsWaitingInput(false);
       setInputVariable('');
       
-      // Continue execution after input
-      if (isRunning) {
-        const result = interpreter.step();
-        setVariables(result.variables);
-        setOutput(result.output);
-        setIsWaitingInput(result.isWaitingForInput);
-        
-        if (result.completed && !result.isWaitingForInput) {
-          setIsRunning(false);
-        }
+      // Continue full execution after input
+      const result = interpreter.execute();
+      setVariables(result.variables);
+      setOutput(result.output);
+      setIsWaitingInput(result.isWaitingForInput);
+      
+      if (result.completed && !result.isWaitingForInput) {
+        setIsRunning(false);
       }
     } catch (err) {
       setError(err.message);
@@ -140,6 +138,7 @@ Fin`);
       if (lineMatch) {
         setErrorLine(parseInt(lineMatch[1]));
       }
+      setIsRunning(false);
     }
   };
 

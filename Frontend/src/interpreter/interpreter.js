@@ -1,24 +1,27 @@
-import { TokenType } from './lexer.js';
+﻿import { TokenType } from './lexer.js';
 
 export class Interpreter {
   constructor() {
     this.variables = {};
     this.output = [];
     this.inputQueue = [];
+    this.inputHistory = []; // Store all inputs received
+    this.inputConsumed = 0; // Track how many historical inputs we've replayed
     this.inputCallback = null;
-    this.executionStack = [];
-    this.currentIndex = 0;
     this.isWaitingForInput = false;
     this.ast = null;
+    this.statementIndex = 0;
   }
 
   reset() {
     this.variables = {};
     this.output = [];
     this.inputQueue = [];
-    this.executionStack = [];
-    this.currentIndex = 0;
+    this.inputHistory = [];
+    this.inputConsumed = 0;
     this.isWaitingForInput = false;
+    this.ast = null;
+    this.statementIndex = 0;
   }
 
   setInputCallback(callback) {
@@ -29,7 +32,8 @@ export class Interpreter {
     // Try to parse as number, otherwise keep as string
     const num = parseFloat(value);
     const finalValue = isNaN(num) ? value : num;
-    this.inputQueue.push(finalValue);
+    this.inputHistory.push(finalValue); // Store in history
+    this.inputQueue.push(finalValue); // Also add to queue for immediate consumption
     this.isWaitingForInput = false;
   }
 
@@ -52,37 +56,46 @@ export class Interpreter {
     return this.inputQueue.shift();
   }
 
-  // Execute the entire program
+  // Execute the entire program - runs until completion or input needed
   execute(ast) {
-    this.reset();
-    this.ast = ast;
-    this.buildExecutionStack(ast.statements);
-    
-    while (this.currentIndex < this.executionStack.length && !this.isWaitingForInput) {
-      this.executeStep();
+    if (ast) {
+      this.reset();
+      this.ast = ast;
     }
+    
+    if (!this.ast) {
+      throw new Error('No program to execute');
+    }
+    
+    // Reset execution state to replay from scratch
+    this.variables = {};
+    this.output = [];
+    this.inputConsumed = 0;
+    this.isWaitingForInput = false;
+    
+    // Execute all statements until we need input or complete
+    this.executeStatements(this.ast.statements);
     
     return {
       output: this.output,
       variables: { ...this.variables },
       isWaitingForInput: this.isWaitingForInput,
-      completed: this.currentIndex >= this.executionStack.length
+      completed: !this.isWaitingForInput
     };
   }
 
-  // Execute one step
+  // Execute one step at a time  
   step(ast = null) {
     if (ast && !this.ast) {
       this.reset();
       this.ast = ast;
-      this.buildExecutionStack(ast.statements);
     }
 
     if (this.isWaitingForInput) {
-      throw new Error('En attente d\'une entrée utilisateur');
+      throw new Error("En attente d'une entrée utilisateur");
     }
 
-    if (this.currentIndex >= this.executionStack.length) {
+    if (!this.ast || this.statementIndex >= this.ast.statements.length) {
       return {
         output: this.output,
         variables: { ...this.variables },
@@ -91,29 +104,30 @@ export class Interpreter {
       };
     }
 
-    this.executeStep();
+    // Execute one statement
+    const statement = this.ast.statements[this.statementIndex];
+    this.executeStatement(statement);
+    
+    if (!this.isWaitingForInput) {
+      this.statementIndex++;
+    }
 
     return {
       output: this.output,
       variables: { ...this.variables },
       isWaitingForInput: this.isWaitingForInput,
-      completed: this.currentIndex >= this.executionStack.length,
-      currentLine: this.currentIndex
+      completed: this.statementIndex >= this.ast.statements.length && !this.isWaitingForInput,
+      currentLine: this.statementIndex
     };
   }
 
-  buildExecutionStack(statements) {
+  // Execute a list of statements - stops when input is needed
+  executeStatements(statements) {
     for (const statement of statements) {
-      this.executionStack.push(statement);
-    }
-  }
-
-  executeStep() {
-    const statement = this.executionStack[this.currentIndex];
-    this.executeStatement(statement);
-    
-    if (!this.isWaitingForInput) {
-      this.currentIndex++;
+      this.executeStatement(statement);
+      if (this.isWaitingForInput) {
+        return; // Pause execution
+      }
     }
   }
 
@@ -147,11 +161,21 @@ export class Interpreter {
   }
 
   executeRead(node) {
+    // Check if we have a historical input to replay
+    if (this.inputConsumed < this.inputHistory.length) {
+      const value = this.inputHistory[this.inputConsumed];
+      this.inputConsumed++;
+      this.variables[node.identifier] = value;
+      return;
+    }
+    
+    // If we don't have input, request it and pause execution
     if (!this.hasInput()) {
       this.requestInput(node.identifier);
       return;
     }
     
+    // We have new input in the queue, use it
     const value = this.getInput();
     this.variables[node.identifier] = value;
   }
@@ -160,23 +184,17 @@ export class Interpreter {
     const condition = this.evaluateExpression(node.condition);
     
     if (condition) {
-      for (const stmt of node.thenBranch) {
-        this.executeStatement(stmt);
-        if (this.isWaitingForInput) return;
-      }
+      this.executeStatements(node.thenBranch);
     } else if (node.elseBranch) {
-      for (const stmt of node.elseBranch) {
-        this.executeStatement(stmt);
-        if (this.isWaitingForInput) return;
-      }
+      this.executeStatements(node.elseBranch);
     }
   }
 
   executeWhile(node) {
     while (this.evaluateExpression(node.condition)) {
-      for (const stmt of node.body) {
-        this.executeStatement(stmt);
-        if (this.isWaitingForInput) return;
+      this.executeStatements(node.body);
+      if (this.isWaitingForInput) {
+        return; // Pause if waiting for input
       }
     }
   }
@@ -187,10 +205,9 @@ export class Interpreter {
     
     for (let i = start; i <= end; i++) {
       this.variables[node.variable] = i;
-      
-      for (const stmt of node.body) {
-        this.executeStatement(stmt);
-        if (this.isWaitingForInput) return;
+      this.executeStatements(node.body);
+      if (this.isWaitingForInput) {
+        return; // Pause if waiting for input
       }
     }
   }
@@ -261,8 +278,7 @@ export class Interpreter {
       variables: { ...this.variables },
       output: [...this.output],
       isWaitingForInput: this.isWaitingForInput,
-      completed: this.currentIndex >= this.executionStack.length,
-      currentLine: this.currentIndex
+      completed: this.ast && this.statementIndex >= this.ast.statements.length && !this.isWaitingForInput
     };
   }
 }
